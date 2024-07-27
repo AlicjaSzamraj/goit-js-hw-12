@@ -55,13 +55,10 @@ body {
   flex-wrap: wrap;
 }
 
-.gallery-list li {
-  flex-basis: calc(33.33% -24px);
-}
 .list-container {
   border: 1px solid #808080;
   width: 450px;
-  height: 200px;
+  height: 230px;
 }
 
 .image-container {
@@ -113,10 +110,6 @@ body {
   color: #fff;
   font: inherit;
   font-weight: 500;
-}
-.loading-text {
-  text-align: center;
-  margin-top: 20px;
 }
 
 .disabled {
