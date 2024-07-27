@@ -4,11 +4,15 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import axios from 'axios';
 
 const form = document.querySelector('.form');
 const input = document.querySelector('.input');
 const galleryList = document.querySelector('.gallery-list');
 const result = document.querySelector('.result');
+const moreButton = document.querySelector('.more-btn');
+const BASE_URL = 'https://pixabay.com/api/';
+const API_KEY = '45116673-24298b0cd3e8b5c60e15e7e67';
 
 const createToggle = selector => ({
   enable: () => document.querySelector(selector).classList.remove('disabled'),
@@ -18,71 +22,94 @@ const createToggle = selector => ({
 const loader = createToggle('.text');
 const loadText = createToggle('.loading-text');
 const resultText = createToggle('.result-text');
+const moreBtn = createToggle('.more-btn');
 
 form.addEventListener('submit', event => {
   event.preventDefault();
   const request = input.value;
-  fetchImages(request);
+  fetchImages(request, currentPage);
+  result.textContent = input.value;
 });
-function fetchImages(request) {
-  const BASE_URL = 'https://pixabay.com/api/';
 
-  const params = new URLSearchParams({
-    key: '45116673-24298b0cd3e8b5c60e15e7e67',
-    q: request,
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-  });
+let currentPage = 1;
+let totalHits = 0;
+let per_page = 30;
+let page = 1;
 
-  const url = `${BASE_URL}?${params}`;
+async function fetchImages(request, page = 1) {
   loader.enable();
   loadText.enable();
+  if (page === 1) {
+    galleryList.innerHTML = '';
+  }
+  try {
+    const response = await axios.get(BASE_URL, {
+      params: {
+        key: '45116673-24298b0cd3e8b5c60e15e7e67',
+        q: request,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+        page,
+        per_page,
+      },
+    });
 
-  fetch(url)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`Error! status: ${res.status}`);
-      }
-      return res.json();
-    })
-    .then(data => {
+    const totalPages = Math.ceil(response.data.totalHits / per_page);
+    if (response.data.hits) {
+      totalHits = response.data.totalHits;
+      displayImages(response.data.hits);
       loader.disable();
       loadText.disable();
       resultText.enable();
-      result.textContent = input.value;
 
-      if (data.hits) {
-        displayImages(data.hits);
-      } else {
-        iziToast.warning({
-          message:
-            'Sorry, there are no images matching your search query. Please try again!',
-          backgroundColor: '#ef4040',
-          messageColor: '#fff',
-        });
-      }
-    })
-    .catch(error => {
+      currentPage = page;
+    } else if (page > totalPages) {
+      moreBtn.disable();
+      loadText.disable;
       loader.disable();
-      loadText.disable();
-      console.error(error);
       iziToast.warning({
-        title: 'Error',
-        message: 'An error occurred while fetching images',
+        position: 'topRight',
+        message: "We're sorry, but you've reached the end of search results.",
       });
+    } else {
+      moreBtn.disable();
+      iziToast.warning({
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+        backgroundColor: '#ef4040',
+        messageColor: '#fff',
+      });
+    }
+    return response.data;
+  } catch (error) {
+    loader.disable();
+    loadText.disable();
+    moreBtn.disable();
+    console.error(error);
+    iziToast.warning({
+      title: 'Error',
+      message: 'An error occurred while fetching images',
     });
+    throw error;
+  }
 }
 
 const message =
   'Sorry, there are no images matching your search query. Please try again!';
 
-function displayImages(images) {
-  galleryList.innerHTML = '';
+function displayImages(images, page) {
+  if (page === 1) {
+    galleryList.innerHTML = '';
+  }
+  if (totalHits > images.length) {
+    moreBtn.enable();
+  }
   if (images.length === 0) {
     loader.disable();
     loadText.disable();
     resultText.disable();
+    moreBtn.disable();
 
     iziToast.warning({
       message: message,
@@ -155,3 +182,8 @@ function makeImgItem({
     </div>
   </li>`;
 }
+let rect = galleryList.getBoundingClientRect();
+moreButton.addEventListener('click', () => {
+  const request = input.value;
+  fetchImages(request, currentPage + 1);
+});
