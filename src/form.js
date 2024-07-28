@@ -31,7 +31,16 @@ let currentQuery = '';
 
 form.addEventListener('submit', event => {
   event.preventDefault();
-
+  currentQuery = input.value.trim();
+  if (currentQuery === '' || input.value === ' ') {
+    iziToast.warning({
+      message: 'Please enter a search term.',
+      position: 'topRight',
+      backgroundColor: '#ef4040',
+      messageColor: '#fff',
+    });
+    return;
+  }
   currentQuery = input.value;
   currentPage = 1;
   fetchImages(currentQuery, currentPage);
