@@ -96,12 +96,17 @@ body {
 .gallery {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 30px;
 }
 .more-btn {
-  display: flex;
-  margin: 0 auto;
-  margin-bottom: 30px;
-  margin-top: 30px;
+  display: block;
+  margin: 30px auto;
   border-radius: 8px;
   border: none;
   padding: 8px 16px;

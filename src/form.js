@@ -24,6 +24,7 @@ const loadText = createToggle('.loading-text');
 const resultText = createToggle('.result-text');
 const moreBtn = createToggle('.more-btn');
 
+
 let currentPage = 1;
 let totalHits = 0;
 let per_page = 30;
@@ -34,7 +35,7 @@ form.addEventListener('submit', event => {
   currentQuery = input.value;
   currentPage = 1;
   fetchImages(currentQuery, currentPage);
-  result.textContent = currentQuery.value;
+  result.textContent = currentQuery;
 });
 
 moreButton.addEventListener('click', () => {
@@ -73,7 +74,7 @@ async function fetchImages(request, page) {
       currentPage = page;
     } else if (page > totalPages) {
       moreBtn.disable();
-      loadText.disable;
+      loadText.disable();
       loader.disable();
       iziToast.warning({
         position: 'topRight',
@@ -133,6 +134,8 @@ function displayImages(images, page) {
   galleryList.insertAdjacentHTML('beforeend', imagesMarkup);
   setTimeout(clearValue, 500);
 
+  galleryList.appendChild(moreButton);
+
   lightbox.refresh();
 }
 
@@ -190,4 +193,10 @@ function makeImgItem({
   </li>`;
 }
 
-let rect = galleryList.getBoundingClientRect();
+const galleryItemHeight = document
+  .querySelector('.gallery-list')
+  .getBoundingClientRect().height;
+window.scrollBy({
+  top: galleryItemHeight * 2,
+  behavior: 'smooth',
+});
