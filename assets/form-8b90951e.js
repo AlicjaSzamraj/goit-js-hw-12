@@ -27,4 +27,4 @@ import{a as x,i as l,S as q}from"./vendor-c493984e.js";const L=document.querySel
       </div>
     </div>
   </li>`}const B=document.querySelector(".gallery-list").getBoundingClientRect().height;window.scrollBy({top:B*2,behavior:"smooth"});
-//# sourceMappingURL=form-94196d91.js.map
+//# sourceMappingURL=form-8b90951e.js.map
