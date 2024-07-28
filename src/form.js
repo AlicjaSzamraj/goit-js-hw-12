@@ -24,12 +24,10 @@ const loadText = createToggle('.loading-text');
 const resultText = createToggle('.result-text');
 const moreBtn = createToggle('.more-btn');
 
-
 let currentPage = 1;
 let totalHits = 0;
 let per_page = 30;
 let currentQuery = '';
-
 
 form.addEventListener('submit', event => {
   event.preventDefault();
@@ -40,7 +38,7 @@ form.addEventListener('submit', event => {
 });
 
 moreButton.addEventListener('click', () => {
-  currentPage++;
+  currentPage + 1;
   fetchImages(currentQuery, currentPage);
   result.textContent = currentQuery;
 });
@@ -134,7 +132,7 @@ function displayImages(images, page) {
   galleryList.insertAdjacentHTML('beforeend', imagesMarkup);
   setTimeout(clearValue, 500);
 
-//   galleryList.appendChild(moreButton);
+  //   galleryList.appendChild(moreButton);
 
   lightbox.refresh();
 }
