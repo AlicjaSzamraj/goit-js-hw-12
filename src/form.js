@@ -24,10 +24,12 @@ const loadText = createToggle('.loading-text');
 const resultText = createToggle('.result-text');
 const moreBtn = createToggle('.more-btn');
 
+
 let currentPage = 1;
 let totalHits = 0;
 let per_page = 30;
 let currentQuery = '';
+
 
 form.addEventListener('submit', event => {
   event.preventDefault();
@@ -43,7 +45,7 @@ moreButton.addEventListener('click', () => {
   result.textContent = currentQuery;
 });
 
-async function fetchImages(request, page) {
+async function fetchImages(currentQuery, page) {
   loader.enable();
   loadText.enable();
   if (page === 1) {
@@ -53,7 +55,7 @@ async function fetchImages(request, page) {
     const response = await axios.get(BASE_URL, {
       params: {
         key: '45116673-24298b0cd3e8b5c60e15e7e67',
-        q: request,
+        q: currentQuery,
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
@@ -132,7 +134,7 @@ function displayImages(images, page) {
   galleryList.insertAdjacentHTML('beforeend', imagesMarkup);
   setTimeout(clearValue, 500);
 
-  galleryList.appendChild(moreButton);
+//   galleryList.appendChild(moreButton);
 
   lightbox.refresh();
 }

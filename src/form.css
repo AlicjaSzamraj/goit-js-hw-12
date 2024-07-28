@@ -47,7 +47,6 @@ body {
 .gallery-list {
   gap: 24px;
   max-width: 1128px;
-  height: 200px;
   margin: 0 auto;
   list-style-type: none;
   display: flex;
@@ -98,12 +97,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
 }
-.button-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 30px;
-}
+
 .more-btn {
   display: block;
   margin: 30px auto;
