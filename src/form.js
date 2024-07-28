@@ -24,7 +24,6 @@ const loadText = createToggle('.loading-text');
 const resultText = createToggle('.result-text');
 const moreBtn = createToggle('.more-btn');
 
-
 let currentPage = 1;
 let totalHits = 0;
 let per_page = 30;
@@ -96,8 +95,7 @@ async function fetchImages(request, page) {
     moreBtn.disable();
     console.error(error);
     iziToast.warning({
-      title: 'Error',
-      message: 'An error occurred while fetching images',
+      message: "We're sorry, but you've reached the end of search results.",
     });
     throw error;
   }
