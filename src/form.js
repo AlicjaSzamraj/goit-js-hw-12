@@ -24,19 +24,26 @@ const loadText = createToggle('.loading-text');
 const resultText = createToggle('.result-text');
 const moreBtn = createToggle('.more-btn');
 
-form.addEventListener('submit', event => {
-  event.preventDefault();
-  const request = input.value;
-  fetchImages(request, currentPage);
-  result.textContent = input.value;
-});
-
 let currentPage = 1;
 let totalHits = 0;
 let per_page = 30;
-let page = 1;
+let currentQuery = '';
 
-async function fetchImages(request, page = 1) {
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  currentQuery = input.value;
+  currentPage = 1;
+  fetchImages(currentQuery, currentPage);
+  result.textContent = currentQuery.value;
+});
+
+moreButton.addEventListener('click', () => {
+  currentPage++;
+  fetchImages(currentQuery, currentPage);
+  result.textContent = currentQuery;
+});
+
+async function fetchImages(request, page) {
   loader.enable();
   loadText.enable();
   if (page === 1) {
@@ -182,8 +189,5 @@ function makeImgItem({
     </div>
   </li>`;
 }
+
 let rect = galleryList.getBoundingClientRect();
-moreButton.addEventListener('click', () => {
-  const request = input.value;
-  fetchImages(request, currentPage + 1);
-});
