@@ -100,7 +100,8 @@ body {
 
 .more-btn {
   display: block;
-  margin: 30px auto;
+  margin: 0 auto;
+  margin-top: 30px;
   border-radius: 8px;
   border: none;
   padding: 8px 16px;

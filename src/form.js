@@ -31,6 +31,7 @@ let currentQuery = '';
 
 form.addEventListener('submit', event => {
   event.preventDefault();
+
   currentQuery = input.value;
   currentPage = 1;
   fetchImages(currentQuery, currentPage);
