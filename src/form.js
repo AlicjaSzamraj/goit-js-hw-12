@@ -48,7 +48,7 @@ form.addEventListener('submit', event => {
 });
 
 moreButton.addEventListener('click', () => {
-  currentPage + 1;
+  currentPage += 1;
   fetchImages(currentQuery, currentPage);
   result.textContent = currentQuery;
 });
